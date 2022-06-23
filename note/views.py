@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from .models import Post
+from .forms import PostForm
 
 # Create your views here.
 def index(request):
@@ -20,3 +21,7 @@ def post_detail(request, post_id):
     post_id = Post.objects.get(id=post_id)
     context["post"] = post_id
     return render(request, 'note/page_detail.html', context=context)
+
+def post_create(request):
+    post_form = PostForm()
+    return render(request, 'note/page_form.html', {'form':post_form})
