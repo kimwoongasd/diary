@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Post
 from .forms import PostForm
 
@@ -23,5 +23,16 @@ def post_detail(request, post_id):
     return render(request, 'note/page_detail.html', context=context)
 
 def post_create(request):
-    post_form = PostForm()
-    return render(request, 'note/page_form.html', {'form':post_form})
+    if request.method == "POST":
+        new_post = Post(
+            title = request.POST['title'],
+            content = request.POST['content'],
+            feeling = request.POST['feeling'],
+            score = request.POST['score'],
+            dt_created = request.POST['dt_created']
+        )
+        new_post.save()
+        return redirect('post-detail', post_id=new_post.id)
+    else:
+        post_form = PostForm()
+        return render(request, 'note/page_form.html', {'form':post_form})
