@@ -25,8 +25,11 @@ def post_detail(request, post_id):
 def post_create(request):
     if request.method == "POST":
         post_form = PostForm(request.POST)
-        new_post = post_form.save()
-        return redirect('post-detail', post_id=new_post.id)
+        if post_form.is_valid():
+            new_post = post_form.save()
+            return redirect('post-detail', post_id=new_post.id)
+    
     else:
         post_form = PostForm()
-        return render(request, 'note/page_form.html', {'form':post_form})
+        
+    return render(request, 'note/page_form.html', {'form':post_form})
