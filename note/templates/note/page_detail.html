@@ -23,7 +23,7 @@
             <div class="detail">{{ post.content|linebreaksbr }}</div>
             <div class="notetext-btn">
                 <ul>
-                    <li><a href="#">삭제하기</a></li>
+                    <li><a href="{% url 'post-delete' post.id %}">삭제하기</a></li>
                     <li><a href="{% url 'post-update' post.id %}">수정하기</a></li>
                 </ul>
             </div>

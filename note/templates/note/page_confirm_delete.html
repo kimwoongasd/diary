@@ -1,0 +1,21 @@
+{% extends './base.html' %}
+
+{% block content %}
+<div class="wrap-delete">
+    <div class="delete-box">
+        <div class="note-info">
+            <p>&#123;</p>
+            <span class="note-date">{{ post.dt_create }}</span>
+            <span class="note-title">{{ post.title }}</span>
+            <p>&#125;</p>
+        </div>
+        <p>삭제하시겠습니까??</p>
+        <form method='post'>{% csrf_token %}
+            <ul>
+                <li><input type="submit" value="지우기"></li>
+                <li><a href="{% url 'post-detail' post.id%}">남기기</a></li>
+            </ul>
+        </form>
+    </div>
+</div>
+{% endblock content %}
