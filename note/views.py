@@ -1,5 +1,5 @@
-import re
 from django.shortcuts import render, redirect
+from django.core.paginator import Paginator
 from .models import Post
 from .forms import PostForm
 
@@ -13,8 +13,12 @@ def info(request):
 def post_list(request):
     context = {}
     posts = Post.objects.all()
-    context["posts"] = posts
-    
+    paginator = Paginator(posts, 6)
+    curr_page_number = request.GET.get('page')
+    if curr_page_number is None:
+        curr_page_number = 1
+    page = paginator.page(curr_page_number)
+    context["page"] = page
     return render(request, "note/page_list.html", context=context)
 
 def post_detail(request, post_id):
