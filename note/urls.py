@@ -2,11 +2,11 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.index, name="index"),
+    path('', views.IndexRedirectView.as_view(), name="index"),
     path('info/', views.info, name="info"),
-    path('post/list/', views.post_list, name='post-list'),
-    path('post/<int:post_id>/', views.post_detail, name='post-detail'),
-    path('post/new/', views.post_create, name='post-create'),
-    path('post/<int:post_id>/update/', views.post_update, name='post-update'),
-    path('post/<int:post_id>/delete/', views.post_delete, name='post-delete')
+    path('post/list/', views.PostListView.as_view(), name='post-list'),
+    path('post/<int:pk>/', views.PostDetailView.as_view(), name='post-detail'),
+    path('post/new/', views.PostCreateView.as_view(), name='post-create'),
+    path('post/<int:pk>/update/', views.PostUpdateView.as_view(), name='post-update'),
+    path('post/<int:pk>/delete/', views.PostDeleteView.as_view(), name='post-delete')
 ]

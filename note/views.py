@@ -1,60 +1,42 @@
-from django.shortcuts import render, redirect
-from django.core.paginator import Paginator
+from django.shortcuts import render
+from django.urls import reverse
+from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView, RedirectView
 from .models import Post
 from .forms import PostForm
 
 # Create your views here.
-def index(request):
-    return render(request, 'note/index.html')
+class IndexRedirectView(RedirectView):
+    pattern_name = "index"
 
 def info(request):
     return render(request, 'note/info.html')
 
-def post_list(request):
-    context = {}
-    posts = Post.objects.all()
-    paginator = Paginator(posts, 6)
-    curr_page_number = request.GET.get('page')
-    if curr_page_number is None:
-        curr_page_number = 1
-    page = paginator.page(curr_page_number)
-    context["page"] = page
-    return render(request, "note/page_list.html", context=context)
-
-def post_detail(request, post_id):
-    context = {}
-    post_id = Post.objects.get(id=post_id)
-    context["post"] = post_id
-    return render(request, 'note/page_detail.html', context=context)
-
-def post_create(request):
-    if request.method == "POST":
-        post_form = PostForm(request.POST)
-        if post_form.is_valid():
-            new_post = post_form.save()
-            return redirect('post-detail', post_id=new_post.id)
+class PostListView(ListView):
+    model = Post
+    context_object_name = "posts"
+    ordering = ["-dt_created"]
+    paginate_by = 8
     
-    else:
-        post_form = PostForm()
-        
-    return render(request, 'note/page_form.html', {'form':post_form})
+class PostDetailView(DetailView):
+    model = Post
 
-def post_update(request, post_id):
-    post = Post.objects.get(id=post_id)
-    if request.method == "POST":
-        post_form = PostForm(request.POST, instance=post)
-        if post_form.is_valid():
-            post_form.save()
-            return redirect('post-detail', post_id=post.id)
-        
-    else:
-        post_form = PostForm(instance=post)
-    return render(request, 'note/page_form.html', {'form':post_form})
+class PostCreateView(CreateView):
+    model = Post
+    form_class = PostForm
+    
+    def get_success_url(self):
+        return reverse('post-detail', kwargs={'pk':self.object.id})
+    
+class PostUpdateView(UpdateView):
+    model = Post
+    form_class = PostForm
+    
+    def get_success_url(self):
+        return reverse('post-detail', kwargs={"pk":self.object.id})
 
-def post_delete(request, post_id):
-    post = Post.objects.get(id=post_id)
-    if request.method == "POST":
-        post.delete()
-        return redirect('post-list')
-    else:
-        return render(request, 'note/page_confirm_delete.html', {'post':post})
+class PostDeleteView(DeleteView):
+    model = Post
+    
+    def get_success_url(self):
+        return reverse('post-list', kwargs={"pk":self.object.id})
+    
