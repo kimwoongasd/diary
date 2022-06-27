@@ -33,7 +33,7 @@
                     <p>{{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</p>
                 </span>
 
-                {% if page.has_next %}
+                {% if page_obj.has_next %}
                     <a href="?page={{ page_obj.next_page_number }}" class="next">다음</a>
                     <a href="?page={{ page_obj.paginator.num_pages }}" class="last">마지막</a>
                 {% endif %}
