@@ -20,9 +20,9 @@ class Migration(migrations.Migration):
             name='Post',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=50, validators=[note.validators.validate_no_hash])),
-                ('content', models.TextField(validators=[note.validators.validate_no_hash])),
-                ('feeling', models.CharField(max_length=50, validators=[note.validators.validate_no_hash, note.validators.validate_no_numbers])),
+                ('title', models.CharField(max_length=50)),
+                ('content', models.TextField()),
+                ('feeling', models.CharField(max_length=50, validators=[note.validators.validate_no_numbers])),
                 ('score', models.IntegerField(validators=[note.validators.validate_score])),
                 ('dt_created', models.DateTimeField(auto_now_add=True)),
                 ('dt_update', models.DateTimeField(auto_now=True)),
