@@ -15,4 +15,7 @@ class Post(models.Model):
         return self.title
     
 class User(AbstractUser):
-    pass
+    nickname = models.CharField(max_length=20, unique=True, null=True)
+    
+    def __str__(self):
+        return self.email
