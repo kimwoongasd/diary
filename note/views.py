@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.urls import reverse
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
+from allauth.account.views import PasswordChangeView
 from .models import Post
 from .forms import PostForm
 
@@ -10,6 +11,9 @@ def index(request):
 
 def info(request):
     return render(request, 'note/info.html')
+
+def profile(request):
+    return render(request, 'note/profile.html')
 
 class PostListView(ListView):
     model = Post
@@ -36,6 +40,10 @@ class PostUpdateView(UpdateView):
 class PostDeleteView(DeleteView):
     model = Post
     
+    def get_success_url(self):
+        return reverse('post-list')
+    
+class CustomPasswordChangeView(PasswordChangeView):
     def get_success_url(self):
         return reverse('post-list')
     
