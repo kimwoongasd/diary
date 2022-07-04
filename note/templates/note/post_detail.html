@@ -23,8 +23,10 @@
             <div class="detail">{{ post.content|linebreaksbr }}</div>
             <div class="notetext-btn">
                 <ul>
+                    {% if post.author == user %}
                     <li><a href="{% url 'post-delete' post.id %}">삭제하기</a></li>
                     <li><a href="{% url 'post-update' post.id %}">수정하기</a></li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
