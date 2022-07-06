@@ -1,10 +1,11 @@
+from multiprocessing import context
 from django.shortcuts import render
 from django.urls import reverse
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 from braces.views import LoginRequiredMixin, UserPassesTestMixin
 from allauth.account.models import EmailAddress
 from allauth.account.views import PasswordChangeView
-from .models import Post
+from .models import Post, User
 from .forms import PostForm
 from .functions import confirmation_required_redirect
 
@@ -15,8 +16,17 @@ def index(request):
 def info(request):
     return render(request, 'note/info.html')
 
-def profile(request):
-    return render(request, 'note/profile.html')
+class ProfileView(DeleteView):
+    model = User
+    template_name = "note/profile.html"
+    pk_url_kwarg = "user_id"
+    context_object_name = "profile_user"
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user_id = self.kwargs.get("user_id")
+        context["user_post"] = Post.objects.filter(author__id=user_id).order_by("-dt_created")[:4]
+        return context
 
 class PostListView(ListView):
     model = Post
