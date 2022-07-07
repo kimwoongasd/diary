@@ -31,8 +31,6 @@ img {
     border: 0;
 }
 
-
-
 /*intro*/
 .wrap-intro{
     width: 100%;
@@ -174,7 +172,6 @@ img {
 .menu ul li.last-menu a:after{
     background: url(../image/ic-pen.svg) no-repeat;
 }
-
 
 
 /*note*/
@@ -781,4 +778,4 @@ input[type="submit"]{
   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   background: linear-gradient(to right, rgba(251, 194, 235, 1), rgba(166, 193, 238, 1))
   }
-  
+

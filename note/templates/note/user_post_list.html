@@ -40,22 +40,14 @@
               </div>
             </div>
             <div class="card-body p-4 text-black">
-              <div class="mb-5">
-                <p class="lead fw-normal mb-1">About</p>
-                <div class="p-4" style="background-color: #f8f9fa;">
-                  <p class="font-italic mb-1">{{ profile_user.intro }}</p>
-                </div>
-              </div>
               <div class="d-flex justify-content-between align-items-center mb-4">
-                <p class="lead fw-normal mb-0">최근 작성 글</p>
-                {% if user_post %}
-                <p class="mb-0"><a href="{% url 'user-post-list' profile_user.id %}" class="text-muted">모두 보기</a></p>
-                {% endif %}
+                <p class="lead fw-normal mb-0">{{ profile_user.nickname }}님의 작성한 글 ({{ paginator.count }})</p>
+                <p class="mb-0"><a href="#!" class="text-muted">모두 보기</a></p>
               </div>
               <div class="note">         
                 <div class="note-list">
                     <ul>
-                        {% for post in user_post %}
+                        {% for post in user_posts %}
                         <li>
                             <a href="{% url 'post-detail' post.id %}">
                                 <div class="date">
@@ -69,10 +61,23 @@
                                 </div>
                             </a>
                         </li>
-                        {% empty %}
-                          <p>아직 작성한 글이 없습니다.</p>
                         {% endfor %}
                     </ul>
+                </div>
+                <div class="paging">
+                    {% if page_obj.has_previous %}
+                        <a href="?page=1" class="first">처음</a>
+                        <a href="?page={{ page_obj.previous_page_number }}" class="prev">이전</a>
+                    {% endif %}
+    
+                    <span class="page">
+                        <p>{{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</p>
+                    </span>
+    
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}" class="next">다음</a>
+                        <a href="?page={{ page_obj.paginator.num_pages }}" class="last">마지막</a>
+                    {% endif %}
                 </div>
             </div>
             </div>
