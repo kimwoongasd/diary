@@ -17,3 +17,12 @@ class PostForm(forms.ModelForm):
     "content",
     "feeling",
     "score"]
+        
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = [
+            "nickname",
+            "profile_pic",
+            "intro",
+        ]

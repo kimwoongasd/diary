@@ -5,7 +5,7 @@ from braces.views import LoginRequiredMixin, UserPassesTestMixin
 from allauth.account.models import EmailAddress
 from allauth.account.views import PasswordChangeView
 from .models import Post, User
-from .forms import PostForm
+from .forms import PostForm, ProfileForm
 from .functions import confirmation_required_redirect
 
 # Create your views here.
@@ -75,6 +75,7 @@ class ProfileView(DetailView):
         context = super().get_context_data(**kwargs)
         user_id = self.kwargs.get("user_id")
         context["user_post"] = Post.objects.filter(author__id=user_id).order_by("-dt_created")[:2]
+        context["posts"] = Post.objects.filter(author__id=user_id).order_by("-dt_created").count()
         return context
 
 class UserPostListView(ListView):
@@ -91,6 +92,17 @@ class UserPostListView(ListView):
         context = super().get_context_data(**kwargs)
         context["profile_user"] = get_object_or_404(User, id=self.kwargs.get("user_id"))
         return context
+
+class ProfileUpdateForm(LoginRequiredMixin, UpdateView):
+    model = User
+    form_class = ProfileForm
+    template_name = "note/profile_update_form.html"
+    
+    def get_object(self, queryset=None):
+        return self.request.user
+    
+    def get_success_url(self):
+        return reverse('profile', kwargs=({"user_id":self.request.user.id}))
 
 class CustomPasswordChangeView(PasswordChangeView):
     def get_success_url(self):

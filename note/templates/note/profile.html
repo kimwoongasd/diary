@@ -15,8 +15,9 @@
                   alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
                   style="width: 150px; z-index: 1">
                 <button type="button" class="btn btn-outline-dark" data-mdb-ripple-color="dark"
-                  style="z-index: 1;">
-                  Edit profile
+                  style="z-index: 1;"><a href="{% url 'profile-update' %}">
+                    프로필 수정
+                    </a>
                 </button>   
               </div>
               <div class="ms-3" style="margin-top: 130px;">
@@ -26,7 +27,7 @@
             <div class="p-4 text-black" style="background-color: #f8f9fa;">
               <div class="d-flex justify-content-end text-center py-1">
                 <div>
-                  <p class="mb-1 h5">253</p>
+                  <p class="mb-1 h5">{{ posts }}</p>
                   <p class="small text-muted mb-0">게시글</p>
                 </div>
                 <div class="px-3">

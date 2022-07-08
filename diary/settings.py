@@ -134,8 +134,8 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
-ACOOUNT_SIGNUP_REDIRECT_URL = "index"
-LOGIN_REDIRECT_URL = "index"
+ACCOUNT_SIGNUP_REDIRECT_URL = 'index'
+LOGIN_REDIRECT_URL = 'index'
 LOGIN_URL = "account_login"
 ACCOUNT_LOGOUT_ON_GET = True
 ACCOUNT_AUTHENTICATION_METHOD = "email"
