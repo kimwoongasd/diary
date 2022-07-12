@@ -1,6 +1,7 @@
-from email.policy import default
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes.fields import GenericForeignKey
 from .validators import validate_no_numbers, validate_score, validate_no_special_characters
 
 # Create your models here.
@@ -15,6 +16,8 @@ class User(AbstractUser):
     
     profile_pic = models.ImageField(default="default_profile_pic.jpg", upload_to="profile_pics")
     intro = models.TextField(blank=True)
+    
+    following = models.ManyToManyField('self', symmetrical=False)
     
     def __str__(self):
         return self.email
@@ -45,3 +48,16 @@ class Comment(models.Model):
     def __str__(self):
         return self.content[:30]
     
+class Like(models.MOdel):
+    dt_created = models.DateTimeField(auto_now_add=True)
+    
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    
+    object_id = models.PositiveBigIntegerField()
+    
+    liked_object = GenericForeignKey('content_type', 'object_id')
+    
+    def __str__(self):
+        return f"{self.user}, {self.liked_object}"
