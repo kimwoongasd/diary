@@ -17,7 +17,7 @@ class User(AbstractUser):
     profile_pic = models.ImageField(default="default_profile_pic.jpg", upload_to="profile_pics")
     intro = models.TextField(blank=True)
     
-    following = models.ManyToManyField('self', symmetrical=False)
+    following = models.ManyToManyField('self', symmetrical=False, blank=True)
     
     def __str__(self):
         return self.email
@@ -48,7 +48,7 @@ class Comment(models.Model):
     def __str__(self):
         return self.content[:30]
     
-class Like(models.MOdel):
+class Like(models.Model):
     dt_created = models.DateTimeField(auto_now_add=True)
     
     user = models.ForeignKey(User, on_delete=models.CASCADE)
