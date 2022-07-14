@@ -11,12 +11,11 @@
                         <a href="{% url 'post-detail' post.id %}">
                             <div class="date">
                                 <span>{{ post.author.nickname }}</span>
-                                <p>{{ post.dt_created|date:"Y년 n월 j일" }}</p>
+                                <p>{{ post.title }}</p>
                             </div>
-                            <h2>{{ post.title }}</h2>
+                            <h2>{{ post.content }}</h2>
                             <div class="score">
-                                <p>감정점수</p>
-                                <span>{{ post.score }}점</span>
+                                <span>{{ post.dt_created|date:"Y년 n월 j일" }}</span>
                             </div>
                         </a>
                     </li>
