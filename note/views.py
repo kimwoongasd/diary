@@ -5,7 +5,7 @@ from braces.views import LoginRequiredMixin, UserPassesTestMixin
 from allauth.account.models import EmailAddress
 from allauth.account.views import PasswordChangeView
 from .models import Post, User
-from .forms import PostForm, ProfileForm
+from .forms import PostForm, ProfileForm, CommentForm
 from .functions import confirmation_required_redirect
 
 # Create your views here.
@@ -22,6 +22,11 @@ class PostListView(ListView):
     
 class PostDetailView(DetailView):
     model = Post
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["form"] = CommentForm()
+        return context
 
 class PostCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = Post

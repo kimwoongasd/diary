@@ -1,4 +1,6 @@
 {% extends './base.html' %}
+{% load static %}
+{% load widget_tweaks %}
 
 {% block content %}
 <div class="wrap-notetext">
@@ -31,6 +33,7 @@
             
             </div>
             <div class="detail">{{ post.content|linebreaksbr }}</div>
+
             <div class="notetext-btn">
                 <ul>
                     <li><a href="{% url 'post-list' %}">목록으로</a></li>
@@ -41,8 +44,66 @@
                 </ul>
             </div>
         </div>
-    </div>
+
+        
+        <div>
+          <div class="card">
+            <div class="card-header">
+              <button class="like-button">
+                <img width="21px" src="{% static 'note/image/ic-heart.svg' %}" alt="like icon">
+                  <span> 좋아요 {{ post.likes.count }}</span>
+              </button>
+              <img src="{% static 'note/image/ic-comment.svg' %}" alt="comment icon">
+              <span> 댓글 {{ post.comments.count }}</span>
+              <form method="post">
+                {% csrf_token %}
+                  <div class="form-group">
+                    {% if user.is_authenticated %}
+                      {{ form.content|attr:"placeholder:댓글 내용을 입력해주세요." }}
+                       <button type="submit">등록</button>
+                    {% else %}
+                      <a href="{% url 'account_login' %}?next={% url 'post-detail' post.id %}">
+                      {{ form.content|attr:"placeholder:로그인 해주세요."|attr:"disabled" }}
+                      </a>
+                     <button type="submit" disabled>등록</button>
+                    {% endif %}
+                  </div>
+              </form>
+              <div class="card">
+                {% for comment in post.comments.all %}
+                  <div class="card-header">
+                    <a href="{% url 'profile' comment.author.id %}">
+                    <div style="background-image: url('{{ comment.author.profile_pic.url }}'); background-repeat: no-repeat; background-size: cover; width: 40px; height: 40px;"></div>
+                    <p>{{ comment.author.nickname }}</p>
+                    </a>
+                  </div>
+                  <div class="card-body">
+                    <h5 class="card-title">
+                      {{ comment.content|linebreaksbr }}
+                    </h5>
+                    <p class="card-text">{{ comment.dt_created|date:"Y년 n월 j일" }}</p>
+                    <div style="float: right">
+                      <button class="like-button">
+                      <img width="16px" src="{% static 'note/image/ic-heart.svg' %}" alt="like icon">
+                      <span> 좋아요 {{ comment.likes.count}}</span>
+                      </button>
+                    </div>
+                    {% if user == comment.author %}
+                      <div style="float: right">
+                        <a href="#">삭제</a>
+                        <span> | </span>
+                        <a href="#">수정</a>
+                      </div>
+                    {% endif %}
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+  </div>
 </div>
+
 {% endblock content %}
 
 

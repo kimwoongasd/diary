@@ -5,7 +5,6 @@ from .models import Post, User, Comment, Like
 
 
 # Register your models here.
-
 class CommentInline(admin.StackedInline):
     model = Comment
     
@@ -36,7 +35,7 @@ class CommentAdmin(admin.ModelAdmin):
 
 
 admin.site.register(User, UserAdmin)
-admin.site.register(Post)
+admin.site.register(Post, PostAdmin)
 admin.site.register(Comment, CommentAdmin)
 admin.site.register(Like)
 

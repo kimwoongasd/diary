@@ -1,5 +1,5 @@
 from django import forms
-from .models import Post, User
+from .models import Post, User, Comment
         
 class SignupForm(forms.ModelForm):
     class Meta:
@@ -26,3 +26,14 @@ class ProfileForm(forms.ModelForm):
             "profile_pic",
             "intro",
         ]
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = [
+            "content",
+        ]
+        
+        widget = {
+            'content': forms.Textarea,
+        }

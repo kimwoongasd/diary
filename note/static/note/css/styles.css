@@ -476,6 +476,134 @@ img {
     background-color: transparent;
 }
 
+/* like-comment-block */
+
+.like-comment-block {
+    display: flex;
+    flex-direction: column;
+    border-radius: 8px;
+    background-color: var(--like-comment-block);
+    padding: 0 25px;
+    margin-bottom: 27px;
+  }
+  
+  /* like-comment-header */
+  
+.like-comment-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 14px 0px;
+    border-bottom: 1px solid var(--comment-border);
+  }
+  
+.like-comment-header > :not(:last-child) {
+    margin-right: 25px;
+  }
+  
+.like-button {
+    border: none;
+    cursor: pointer;
+    background: none;
+    font-size: 17px;
+    padding: 0;
+  }
+  
+a.like-button:hover {
+    text-decoration: none;
+  }
+  
+.comment-info {
+    font-size: 17px;
+  }
+  
+.like-button, .comment-info {
+    display: flex;
+    align-items: center;
+    white-space: pre;
+  }
+  
+  /* comment */
+  
+.comment {
+    padding: 20px 5px 25px 5px;
+    border-top: 1px solid var(--comment-border);
+  }
+  
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  
+.comment-header .buttons {
+    font-size: 14px;
+  }
+  
+.comment-content {
+    font-size: 15px;
+    line-height: 1.67;
+    margin-bottom: 6px;
+  }
+  
+.comment-footer {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+.comment-footer .like-button {
+    font-size: 14px;
+  }
+  
+.comment-date {
+    font-size: 14px;
+    letter-spacing: -0.21px;
+    color: #adadad;
+  }
+  
+  /* comment-form */
+  
+.comment-create-form {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+  
+.comment-create-form a {
+    width: 100%;
+  }
+  
+.comment-create-form textarea.cp-input {
+    height: 120px;
+  }
+  
+.comment-create-form button.cp-button {
+    margin-left: 25px;
+    flex-shrink: 0;
+  }
+  
+.comment-update-form {
+    max-width: 840px;
+    margin: 64px auto 19px auto;
+  }
+  
+.comment-update-form textarea.cp-input {
+    height: 120px;
+  }
+  
+.comment-update-form .buttons {
+    margin-top: 19px;
+    display: flex;
+    justify-content: end;
+  }
+  
+.comment-update-form .buttons > :not(:last-child) {
+    margin-right: 15px;
+  }
+
+
 /*error*/
 .wrap-error{
     margin-top: 200px;
@@ -779,3 +907,5 @@ input[type="submit"]{
   background: linear-gradient(to right, rgba(251, 194, 235, 1), rgba(166, 193, 238, 1))
   }
 
+
+  
