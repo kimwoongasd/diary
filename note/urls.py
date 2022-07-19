@@ -14,5 +14,8 @@ urlpatterns = [
     # profile
     path('profile/<int:user_id>/', views.ProfileView.as_view(), name="profile"),
     path('profile/<int:user_id>/post/', views.UserPostListView.as_view(), name="user-post-list"),
-    path('update-profile/', views.ProfileUpdateForm.as_view(), name="profile-update")
+    path('update-profile/', views.ProfileUpdateForm.as_view(), name="profile-update"),
+    
+    # comment
+    path('post/<int:pk>/comments/create/', views.CommentCreateView.as_view(),name="comment-create"),
 ]

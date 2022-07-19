@@ -55,7 +55,7 @@
               </button>
               <img src="{% static 'note/image/ic-comment.svg' %}" alt="comment icon">
               <span> 댓글 {{ post.comments.count }}</span>
-              <form method="post">
+              <form action="{% url 'comment-create' post.id %}" method="post">
                 {% csrf_token %}
                   <div class="form-group">
                     {% if user.is_authenticated %}

@@ -4,7 +4,7 @@ from django.views.generic import CreateView, ListView, DetailView, UpdateView, D
 from braces.views import LoginRequiredMixin, UserPassesTestMixin
 from allauth.account.models import EmailAddress
 from allauth.account.views import PasswordChangeView
-from .models import Post, User
+from .models import Post, User, Comment
 from .forms import PostForm, ProfileForm, CommentForm
 from .functions import confirmation_required_redirect
 
@@ -112,4 +112,24 @@ class ProfileUpdateForm(LoginRequiredMixin, UpdateView):
 class CustomPasswordChangeView(PasswordChangeView):
     def get_success_url(self):
         return reverse('post-list')
+
+
+class CommentCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+    http_method_names = ["post"]
+    model = Comment
+    form_class = CommentForm
+    
+    redirect_unauthenticated_users = True
+    raise_exception = confirmation_required_redirect
+    
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        form.instance.post = Post.objects.get(id=self.kwargs.get("pk"))
+        return super().form_valid(form)
+    
+    def get_success_url(self):
+        return reverse("post-detail", kwargs={"pk":self.kwargs.get("pk")})
+    
+    def test_func(self, user):
+        return EmailAddress.objects.filter(user=user, verified=True).exists()
     
