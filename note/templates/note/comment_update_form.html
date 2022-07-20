@@ -1,0 +1,21 @@
+{% extends './base.html' %}
+
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="wrap-notetext">
+    <div class="notetext">
+        <form method="post">
+            {% csrf_token %}
+            <div class="card">
+                <div class="card-body">
+                    {{ form.content|attr:"placeholder:댓글 내용을 입력해주세요." }}
+                    <button type="submit">등록</button>
+                    <a href="{% url 'post-detail' comment.post.id %}" class="btn btn-primary">취소</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock content %}
+

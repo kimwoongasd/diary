@@ -17,5 +17,7 @@ urlpatterns = [
     path('update-profile/', views.ProfileUpdateForm.as_view(), name="profile-update"),
     
     # comment
-    path('post/<int:pk>/comments/create/', views.CommentCreateView.as_view(),name="comment-create"),
+    path('post/<int:pk>/comments/create/', views.CommentCreateView.as_view(), name="comment-create"),
+    path('post/<int:comment_id>/comments/update/', views.CommentUpdateView.as_view(), name="comment-update"),
+    path('post/<int:comment_id>/comments/delete/', views.CommentDeleteView.as_view(), name="comment-delete"),
 ]

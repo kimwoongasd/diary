@@ -1,0 +1,18 @@
+{% extends './base.html' %}
+
+{% block content %}
+<div class="wrap-notetext">
+    <div class="notetext">
+        <div class="wrap-delete">
+            <div class="delete-box">
+                <p>삭제하시겠습니까??</p>
+                <form method='post'>
+                    {% csrf_token %}
+                    <button type="submit">삭제</button>
+                    <a href="{% url 'post-detail' comment.post.id %}" class="btn btn-primary">취소</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

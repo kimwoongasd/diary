@@ -111,4 +111,21 @@ class CommentCreateView(LoginAndVerificationRequiredMixin, CreateView):
     def get_success_url(self):
         return reverse("post-detail", kwargs={"pk":self.kwargs.get("pk")})
 
+class CommentUpdateView(LoginAndOwershipRequiredMixin, UpdateView):
+    model = Comment
+    form_class = CommentForm
+    template_name = "note/comment_update_form.html"
+    pk_url_kwarg = "comment_id"
     
+    def get_success_url(self):
+        return reverse('post-detail', kwargs={"pk":self.object.post.id})
+    
+
+class CommentDeleteView(LoginAndOwershipRequiredMixin, DeleteView):
+    model = Comment
+    pk_url_kwarg = "comment_id"
+    template_name = "note/comment_confirm_delete.html"
+    
+    def get_success_url(self):
+        return reverse('post-detail', kwargs={"pk":self.object.post.id})
+
