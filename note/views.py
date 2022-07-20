@@ -1,12 +1,11 @@
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
-from braces.views import LoginRequiredMixin, UserPassesTestMixin
-from allauth.account.models import EmailAddress
+from braces.views import LoginRequiredMixin
 from allauth.account.views import PasswordChangeView
 from .models import Post, User, Comment
 from .forms import PostForm, ProfileForm, CommentForm
-from .functions import confirmation_required_redirect
+from .mixin import LoginAndVerificationRequiredMixin, LoginAndOwershipRequiredMixin
 
 # Create your views here.
 def index(request):
@@ -28,12 +27,9 @@ class PostDetailView(DetailView):
         context["form"] = CommentForm()
         return context
 
-class PostCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+class PostCreateView(LoginAndVerificationRequiredMixin, CreateView):
     model = Post
     form_class = PostForm
-    
-    redirect_unauthenticated_users = True
-    raise_exception = confirmation_required_redirect
     
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -42,33 +38,21 @@ class PostCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     def get_success_url(self):
         return reverse('post-detail', kwargs={'pk':self.object.id})
     
-    def test_func(self, user):
-        return EmailAddress.objects.filter(user=user, verified=True).exists()
     
-class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+class PostUpdateView(LoginAndOwershipRequiredMixin, UpdateView):
     model = Post
     form_class = PostForm
-    
-    raise_exception = True
     
     def get_success_url(self):
         return reverse('post-detail', kwargs={"pk":self.object.id})
     
-    def test_func(self, user):
-        post = self.get_object()
-        return post.author == user
 
-class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+class PostDeleteView(LoginAndOwershipRequiredMixin, DeleteView):
     model = Post
-    
-    raise_exception = True
     
     def get_success_url(self):
         return reverse('post-list')
     
-    def test_func(self, user):
-        post = self.get_object()
-        return post.author == user
 
 class ProfileView(DetailView):
     model = User
@@ -114,13 +98,10 @@ class CustomPasswordChangeView(PasswordChangeView):
         return reverse('post-list')
 
 
-class CommentCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+class CommentCreateView(LoginAndVerificationRequiredMixin, CreateView):
     http_method_names = ["post"]
     model = Comment
     form_class = CommentForm
-    
-    redirect_unauthenticated_users = True
-    raise_exception = confirmation_required_redirect
     
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -129,7 +110,5 @@ class CommentCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     
     def get_success_url(self):
         return reverse("post-detail", kwargs={"pk":self.kwargs.get("pk")})
-    
-    def test_func(self, user):
-        return EmailAddress.objects.filter(user=user, verified=True).exists()
+
     
