@@ -33,7 +33,7 @@ class Post(models.Model):
     
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="posts")
     
-    likes = GenericRelation("Like")
+    likes = GenericRelation("Like", related_query_name="post")
     
     def __str__(self):
         return self.title
@@ -47,7 +47,7 @@ class Comment(models.Model):
     
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comments")
     
-    likes = GenericRelation("Like")
+    likes = GenericRelation("Like", related_query_name="comment")
     
     def __str__(self):
         return self.content[:30]
