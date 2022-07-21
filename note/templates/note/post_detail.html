@@ -49,10 +49,20 @@
         <div>
           <div class="card">
             <div class="card-header">
-              <button class="like-button">
-                <img width="21px" src="{% static 'note/image/ic-heart.svg' %}" alt="like icon">
+              {% if user.is_authenticated %}
+                <form style="margin:0px;padding:0px;" method="post" action="{% url 'process-like' post_content_type_id post.id %}">
+                  {% csrf_token %}
+                  <button class="like-button" type="submit">
+                    <img width="21px" src="{% static 'note/image/ic-heart.svg' %}" alt="like icon">
+                      <span> 좋아요 {{ post.likes.count }}</span>
+                  </button>
+                </form>
+              {% else %}
+                <a class="like-button" href="{% url 'account_login' %}?next={% url 'post-detail' post.id %}">
+                  <img width="21px" src="{% static 'note/image/ic-heart.svg' %}" alt="like icon">
                   <span> 좋아요 {{ post.likes.count }}</span>
-              </button>
+                </a>
+              {% endif %}
               <img src="{% static 'note/image/ic-comment.svg' %}" alt="comment icon">
               <span> 댓글 {{ post.comments.count }}</span>
               <form action="{% url 'comment-create' post.id %}" method="post">
@@ -83,10 +93,20 @@
                     </h5>
                     <p class="card-text">{{ comment.dt_created|date:"Y년 n월 j일" }}</p>
                     <div style="float: right">
-                      <button class="like-button">
-                      <img width="16px" src="{% static 'note/image/ic-heart.svg' %}" alt="like icon">
-                      <span> 좋아요 {{ comment.likes.count}}</span>
-                      </button>
+                      {% if user.is_authenticated %}
+                      <form style="margin:0px;padding:0px;" method="post" action="{% url 'process-like' comment_content_type_id comment.id %}">
+                          {% csrf_token %}
+                          <button class="like-button" type="submit">
+                          <img width="16px" src="{% static 'note/image/ic-heart.svg' %}" alt="like icon">
+                          <span> 좋아요 {{ comment.likes.count }}</span>
+                          </button>
+                        </form>
+                      {% else %}
+                        <a class="like-button" href="{% url 'account_login' %}?next={% url 'post-detail' post.id %}">
+                          <img width="16px" src="{% static 'note/image/ic-heart.svg' %}" alt="like icon">
+                          <span> 좋아요 {{ comment.likes.count }}</span>
+                        </a>
+                      {% endif %}
                     </div>
                     {% if user == comment.author %}
                       <div style="float: right">

@@ -1,9 +1,10 @@
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
-from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
+from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView, View
+from django.contrib.contenttypes.models import ContentType
 from braces.views import LoginRequiredMixin
 from allauth.account.views import PasswordChangeView
-from .models import Post, User, Comment
+from .models import Post, User, Comment, Like
 from .forms import PostForm, ProfileForm, CommentForm
 from .mixin import LoginAndVerificationRequiredMixin, LoginAndOwershipRequiredMixin
 
@@ -14,6 +15,7 @@ def index(request):
 def info(request):
     return render(request, 'note/info.html')
 
+# Post
 class PostListView(ListView):
     model = Post
     ordering = ["-dt_created"]
@@ -25,6 +27,8 @@ class PostDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["form"] = CommentForm()
+        context["post_content_type_id"] = ContentType.objects.get(model='post').id
+        context["comment_content_type_id"] = ContentType.objects.get(model='comment').id
         return context
 
 class PostCreateView(LoginAndVerificationRequiredMixin, CreateView):
@@ -52,21 +56,8 @@ class PostDeleteView(LoginAndOwershipRequiredMixin, DeleteView):
     
     def get_success_url(self):
         return reverse('post-list')
-    
 
-class ProfileView(DetailView):
-    model = User
-    template_name = "note/profile.html"
-    pk_url_kwarg = "user_id"
-    context_object_name = "profile_user"
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        user_id = self.kwargs.get("user_id")
-        context["user_post"] = Post.objects.filter(author__id=user_id).order_by("-dt_created")[:2]
-        context["posts"] = Post.objects.filter(author__id=user_id).order_by("-dt_created").count()
-        return context
-
+# Profile
 class UserPostListView(ListView):
     model = Post
     template_name = "note/user_post_list.html"
@@ -81,6 +72,20 @@ class UserPostListView(ListView):
         context = super().get_context_data(**kwargs)
         context["profile_user"] = get_object_or_404(User, id=self.kwargs.get("user_id"))
         return context
+
+class ProfileView(DetailView):
+    model = User
+    template_name = "note/profile.html"
+    pk_url_kwarg = "user_id"
+    context_object_name = "profile_user"
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user_id = self.kwargs.get("user_id")
+        context["user_post"] = Post.objects.filter(author__id=user_id).order_by("-dt_created")[:2]
+        context["posts"] = Post.objects.filter(author__id=user_id).order_by("-dt_created").count()
+        return context
+
 
 class ProfileUpdateForm(LoginRequiredMixin, UpdateView):
     model = User
@@ -97,7 +102,7 @@ class CustomPasswordChangeView(PasswordChangeView):
     def get_success_url(self):
         return reverse('post-list')
 
-
+# Comment
 class CommentCreateView(LoginAndVerificationRequiredMixin, CreateView):
     http_method_names = ["post"]
     model = Comment
@@ -129,3 +134,19 @@ class CommentDeleteView(LoginAndOwershipRequiredMixin, DeleteView):
     def get_success_url(self):
         return reverse('post-detail', kwargs={"pk":self.object.post.id})
 
+# Like
+class ProcessLikeView(LoginAndVerificationRequiredMixin, View):
+    http_method_names = ["post"]
+
+    def post(self, reqeust, *args, **kwargs):
+        like, created = Like.objects.get_or_create(
+            user = self.request.user,
+            content_type_id = self.kwargs.get("content_type_id"),
+            object_id = self.kwargs.get("object_id"),
+        )
+        
+        if not created:
+            like.delete()
+        
+        return redirect(self.request.META["HTTP_REFERER"])
+            
