@@ -102,10 +102,10 @@
                           {% csrf_token %}
                           <button class="like-button" type="submit">
                             {% if comment in likes_comment %}
-                            <img width="21px" src="{% static 'note/image/ic-heart-orange.svg' %}" alt="like icon">
-                          {% else %}
-                            <img width="16px" src="{% static 'note/image/ic-heart.svg' %}" alt="like icon">
-                          {% endif %}
+                              <img width="21px" src="{% static 'note/image/ic-heart-orange.svg' %}" alt="like icon">
+                            {% else %}
+                              <img width="16px" src="{% static 'note/image/ic-heart.svg' %}" alt="like icon">
+                            {% endif %}
                             <span> 좋아요 {{ comment.likes.count }}</span>
                           </button>
                         </form>
