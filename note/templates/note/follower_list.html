@@ -13,15 +13,15 @@
                         <div class="card-body">
                             <div class="e-profile">
                                 <h2>팔로잉 ({{ paginator.count }})</h2>
-                                {% if following %}
+                                {% if followers %}
                                 <ul class="list-group">
-                                    {% for follow in following %}
+                                    {% for follower in followers %}
                                         <li class="list-group-item">
-                                            <a href="{% url 'profile' follow.id %}">
-                                                <img src="{{ follow.profile_pic.url }}"
+                                            <a href="{% url 'profile' follower.id %}">
+                                                <img src="{{ follower.profile_pic.url }}"
                                                     alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
                                                     style="width: 50px; z-index: 1">
-                                                {{ follow.nickname }}
+                                                {{ follower.nickname }}
                                             </a>
                                         </li>
                                     {% endfor %}

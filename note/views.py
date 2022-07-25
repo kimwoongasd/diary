@@ -190,3 +190,18 @@ class FollowingListView(ListView):
         context['profile_user_id'] = self.kwargs.get("user_id")
         return context
         
+class FollowerListView(ListView):
+    model = User
+    template_name = "note/follower_list.html"
+    context_object_name= "followers"
+    paginate_by = 10
+    
+    def get_queryset(self):
+        profile_user = get_object_or_404(User, pk=self.kwargs.get("user_id"))
+        return profile_user.followers.all()
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["profile_user_id"] = self.kwargs.get("user_id")
+        return context
+        

@@ -27,5 +27,5 @@ urlpatterns = [
     # follow
     path('post/users/<int:user_id>/follow/', views.ProcessFollowView.as_view(), name="process-follow"),
     path('post/users/<int:user_id>/following/', views.FollowingListView.as_view(), name="following-list"),
-    path('post/users/<int:user_id>/followers/', views.ProcessFollowView.as_view(), name="process-followers"),
+    path('post/users/<int:user_id>/followers/', views.FollowerListView.as_view(), name="followers-list"),
 ]
