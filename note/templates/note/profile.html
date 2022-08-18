@@ -14,15 +14,16 @@
                 <img src="{{ profile_user.profile_pic.url }}"
                   alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
                   style="width: 150px; z-index: 1">
+                  {% if user.is_authenticated and user == profile_user %}
                 <button type="button" class="btn btn-outline-dark" data-mdb-ripple-color="dark"
                   style="z-index: 1;"><a href="{% url 'profile-update' %}">
                     프로필 수정
                     </a>
                 </button>   
+                {% endif %}
               </div>
               <div class="ms-3" style="margin-top: 130px;">
                 <h5>{{ profile_user.nickname }}</h5>
-                <p><a href="{% url 'account_change_password' %}" >비밀번호 변경</a></p>
                 <div>
                   {% if user.is_authenticated and user != profile_user %}
                     <form action="{% url 'process-follow' profile_user.id %}" style="float: right; margin:0px; padding:0px;" method="post">
