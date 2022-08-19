@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
-from password import sql_password
+from .password import sql_password
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -86,9 +86,9 @@ WSGI_APPLICATION = 'diary.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'dry',
+        'NAME': 'diary',
         'USER': 'root',
-        'PASSWORD': sql_password,
+        'PASSWORD': sql_password(),
         'HOST': 'localhost',
         'PORT': '3306',
     }
