@@ -1,5 +1,6 @@
 {% load static %}
 {% load widget_tweaks %}
+{% load socialaccount %}
 
 <!doctype html>
 <html lang="en">
@@ -71,6 +72,7 @@
         </label>
       </div>
       <button class="btn btn-lg btn-primary btn-block" type="submit">로그인</button>
+      <a href="{% provider_login_url 'google' %}" class="social-button" id="google-connect"> <span>Login with Google</span></a>
       <p class="mt-5 mb-3 text-muted">&copy; 2017-2021</p>
     </form>
 
