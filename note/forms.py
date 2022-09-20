@@ -1,5 +1,6 @@
+from dataclasses import field
 from django import forms
-from .models import Post, User, Comment
+from .models import Post, ReComment, User, Comment
         
 class SignupForm(forms.ModelForm):
     class Meta:
@@ -37,3 +38,10 @@ class CommentForm(forms.ModelForm):
         widget = {
             'content': forms.Textarea,
         }
+
+class ReCommentForm(forms.ModelForm):
+    class Meta:
+        model = ReComment
+        fields = [
+            "content",
+        ]

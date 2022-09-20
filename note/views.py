@@ -4,8 +4,8 @@ from django.views.generic import CreateView, ListView, DetailView, UpdateView, D
 from django.contrib.contenttypes.models import ContentType
 from braces.views import LoginRequiredMixin
 from allauth.account.views import PasswordChangeView
-from .models import Post, User, Comment, Like
-from .forms import PostForm, ProfileForm, CommentForm
+from .models import Post, ReComment, User, Comment, Like
+from .forms import PostForm, ProfileForm, CommentForm, ReCommentForm
 from .mixin import LoginAndVerificationRequiredMixin, LoginAndOwershipRequiredMixin
 
 # Create your views here.
@@ -27,6 +27,7 @@ class PostDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["form"] = CommentForm()
+        context["recomment"] = ReCommentForm()
         context["post_content_type_id"] = ContentType.objects.get(model='post').id
         context["comment_content_type_id"] = ContentType.objects.get(model='comment').id
         
