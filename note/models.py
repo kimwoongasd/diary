@@ -52,6 +52,15 @@ class Comment(models.Model):
     def __str__(self):
         return self.content[:30]
     
+class ReComment(models.Model):
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name="recomments")
+    content = models.TextField(max_length=500, blank=False)
+    dt_created = models.DateTimeField(auto_now_add=True)
+    dt_update = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return self.content[:30]
+    
 class Like(models.Model):
     dt_created = models.DateTimeField(auto_now_add=True)
     
