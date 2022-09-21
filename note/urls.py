@@ -20,6 +20,7 @@ urlpatterns = [
     path('post/<int:pk>/comments/create/', views.CommentCreateView.as_view(), name="comment-create"),
     path('post/<int:comment_id>/comments/update/', views.CommentUpdateView.as_view(), name="comment-update"),
     path('post/<int:comment_id>/comments/delete/', views.CommentDeleteView.as_view(), name="comment-delete"),
+    path('post/<int:pk>/recomments/<int:comment_id>/create/', views.ReCommentCreateView.as_view(), name="recomment-create"),
     
     # like
     path('post/like/<int:content_type_id>/<int:object_id>/', views.ProcessLikeView.as_view(), name="process-like"),

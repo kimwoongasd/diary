@@ -124,6 +124,33 @@
                       </div>
                     {% endif %}
                   </div>
+
+
+                  <form action="{% url 'recomment-create' post.id comment.id %}" method="post">
+                    {% csrf_token %}
+                      <div class="form-group">
+                        {% if user.is_authenticated %}
+                          {{ recomment.content|attr:"placeholder:댓글 내용을 입력해주세요." }}
+                           <button type="submit">댓글쓰기</button>
+                        {% else %}
+                          <a href="{% url 'account_login' %}?next={% url 'post-detail' post.id %}">
+                          {{ recomment.content|attr:"placeholder:로그인 해주세요."|attr:"disabled" }}
+                          </a>
+                         <button type="submit" disabled>댓글쓰기</button>
+                        {% endif %}
+                      </div>
+                  </form>
+                  <div class="card">
+                    {% for recomment in comment.recomments.all %}
+                      <div class="card-body">
+                        <h5 class="card-title">
+                          {{ recomment.content|linebreaksbr }}
+                        </h5>
+                      </div>
+                      {% endfor %}
+                  </div>
+
+
                 {% endfor %}
               </div>
             </div>

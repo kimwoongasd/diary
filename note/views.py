@@ -126,6 +126,20 @@ class CommentCreateView(LoginAndVerificationRequiredMixin, CreateView):
     
     def get_success_url(self):
         return reverse("post-detail", kwargs={"pk":self.kwargs.get("pk")})
+    
+class ReCommentCreateView(LoginAndVerificationRequiredMixin, CreateView):
+    http_method_names = ["post"]
+    model = ReComment
+    form_class = ReCommentForm
+    
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        form.instance.post = Post.objects.get(id=self.kwargs.get("pk"))
+        form.instance.comment = Comment.objects.get(id=self.kwargs.get("comment_id"))
+        return super().form_valid(form)
+    
+    def get_success_url(self):
+        return reverse('post-detail', kwargs={"pk":self.object.post.id})
 
 class CommentUpdateView(LoginAndOwershipRequiredMixin, UpdateView):
     model = Comment
