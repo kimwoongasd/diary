@@ -124,3 +124,11 @@
 ![image](https://user-images.githubusercontent.com/67260228/185429841-695614b7-3839-4686-96ff-ec54f0244c9a.png)
 ![image](https://user-images.githubusercontent.com/67260228/185421605-9b43135e-4f74-4268-bb75-9c84fdd8df33.png)
 
+# 추가기능
+## 소셜 로그인
+---
+* 구글 로그인
+  ![image](https://user-images.githubusercontent.com/67260228/194020268-fbb3adb9-de3b-42ce-83b6-52beafe78e2b.png)
+## 대댓글
+* 로그인 한 유저만 댓글 달기 가능
+ ![image](https://user-images.githubusercontent.com/67260228/194020473-1d191b9a-7f7d-4fa1-98c7-fbaf4f445376.png)
