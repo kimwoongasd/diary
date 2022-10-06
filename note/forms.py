@@ -1,4 +1,4 @@
-from dataclasses import field
+from dataclasses import field, fields
 from django import forms
 from .models import Post, ReComment, User, Comment
         
@@ -45,3 +45,5 @@ class ReCommentForm(forms.ModelForm):
         fields = [
             "content",
         ]
+        
+        

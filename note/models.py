@@ -3,6 +3,8 @@ from django.contrib.auth.models import AbstractUser
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from .validators import validate_no_numbers, validate_score, validate_no_special_characters
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 # Create your models here.
 class User(AbstractUser):
@@ -57,7 +59,7 @@ class ReComment(models.Model):
     content = models.TextField(max_length=500, blank=False)
     dt_created = models.DateTimeField(auto_now_add=True)
     dt_update = models.DateTimeField(auto_now=True)
-    
+
     def __str__(self):
         return self.content[:30]
     
@@ -74,3 +76,4 @@ class Like(models.Model):
     
     def __str__(self):
         return f"{self.user}, {self.liked_object}"
+    

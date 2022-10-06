@@ -1,3 +1,4 @@
+from urllib import request
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView, View
@@ -131,12 +132,13 @@ class ReCommentCreateView(LoginAndVerificationRequiredMixin, CreateView):
     http_method_names = ["post"]
     model = ReComment
     form_class = ReCommentForm
-    
+
     def form_valid(self, form):
         form.instance.author = self.request.user
         form.instance.post = Post.objects.get(id=self.kwargs.get("pk"))
         form.instance.comment = Comment.objects.get(id=self.kwargs.get("comment_id"))
         return super().form_valid(form)
+
     
     def get_success_url(self):
         return reverse('post-detail', kwargs={"pk":self.object.post.id})
